@@ -1,2 +1,5 @@
-# Zen-Zone
-Zen Zone: Gym Management System
+# Zen Zone: Gym Management System
+
+Setup:
+Create a virtual environment file
+
