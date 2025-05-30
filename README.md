@@ -11,9 +11,9 @@ environment_name\Scripts\activate
 Install requirements:<br>
 pip install -r requirements. txt
 
-### Login Details:<br>
-Admin Login:<br>
+### Admin Login:<br>
 username: admin<br>
 password: admin<br>
+(NB:Other login details are available within the admin dashboard.)
 
 
