@@ -1,7 +1,7 @@
 # Zen Zone: Gym Management System
 
 ### Setup:<br>
-Create a virtual environment file:<br>
+Create a virtual environment:<br>
 python -m venv environment_name<br>
 
 Activate virtual environment:<br>
