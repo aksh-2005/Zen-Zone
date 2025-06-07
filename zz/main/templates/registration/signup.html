@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .signup-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 2.5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .section-heading {
+    font-weight: 700;
+    color: #2d3748;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .section-heading:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #10b981, #059669);
+    border-radius: 3px;
+  }
+  
+  .table-bordered {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table-bordered th {
+    background-color: #f1f5f9;
+    padding: 1rem;
+    font-weight: 600;
+  }
+  
+  .table-bordered td {
+    padding: 1rem;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(to right, #059669, #10b981);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  }
+  
+
+  
+  .form-control {
+    border-radius: 6px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    border-color: #10b981;
+  }
+  
+  .already-logged-in {
+    animation: fadeIn 0.5s ease-in-out;
+    border-left: 5px solid #10b981;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+{% if not request.user.is_authenticated %}
+<!-- Main Start -->
+<main>
+  <!-- Services -->
+  <section class="container signup-section">
+    <h1 class="text-center section-heading">Join Zen Zone</h1>
+    <div class="row">
+      <div class="col-md-6 offset-3">
+        {% if msg %}
+        <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+          <i class="bi bi-check-circle-fill me-2"></i>{{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        
+        <form method="post" action="">
+          {% csrf_token %}
+          <table class="table table-bordered">
+            {{form.as_table}}
+            <tr>
+              <td colspan="2">
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-person-plus-fill me-2"></i> Create Account
+                </button>
+              </td>
+            </tr>
+          </table>
+        </form>
+        
+        <div class="text-center mt-4 pt-3 border-top">
+          <p class="fs-6 fw-semibold text-muted">Already a member? Log in to access your account!</p>
+          <a href="{% url 'login' %}" class="btn btn-warning rounded-pill px-4 py-2 shadow-lg">
+            <i class="bi bi-person-fill me-2"></i> <span class="fw-semibold">Log In</span>
+        </a>
+        
+        
+        </div>
+      </div>
+    </div>
+    <style>
+  .btn-warning {
+   
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  }
+    </style>
+  </section>
+  <!-- End -->
+</main>
+
+{% else %}
+<div class="container mt-5 mb-5">
+  <div class="alert alert-success text-center shadow-sm rounded-3 p-4 already-logged-in" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-4"></i> 
+    <span class="fw-semibold fs-5">You are already logged in!</span>
+    <p class="mt-2 mb-0 text-muted">Feel free to explore the site or visit your dashboard.</p>
+  </div>
+</div>
+{% endif %}
+<!-- End -->
+{% endblock %}

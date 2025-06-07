@@ -1,0 +1,165 @@
+{% extends 'base.html' %} 
+{% load static %} 
+{% load check_package %} 
+{% load mathfilters %} 
+{% block content %}
+<!-- Bootstrap Icons --> 
+<main class="dark-theme">
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}" />
+
+
+  <section class="container my-5">
+    <h1 class="text-center mb-4 section-heading display-5 fw-bold text-warning glow-text">Choose Your Plan</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4 text-center">
+      {% for plan in plans %}
+      <div class="col">
+        <div class="card pricing-card bg-dark-card shadow-lg border-0 {% if plan.highlighted_status %} featured {% endif %}">
+          <div class="card-header py-4 {% if plan.highlighted_status %} bg-warning text-dark {% endif %}">
+            <h4 class="my-0 fw-bold {% if not plan.highlighted_status %} text-info {% endif %}">{{ plan.title }}</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title text fw-bold">
+              ₹{{ plan.price }}<small class=" fw-light">/month</small>
+            </h1>
+            <p class="text-info">Member Capacity: {{ plan.max_member|sub:plan.total_members }}</p>
+            <ul class="list-unstyled mt-3 mb-4 text-light">
+              {% for feature in plan.subplanfeature_set.all %}
+              <li><i class="bi bi-check-circle-fill text-warning"></i> {{ feature.title }}</li>
+              {% endfor %}
+            </ul>
+
+            {% if request.user.is_authenticated %}
+              {% check_user_package request.user.id plan.id as check_pckg %}
+              {% check_pckg_validity request.user.id plan.id as check_validity %}
+              {% if check_pckg %}
+                {% if check_validity %}
+                  <a href="{% url 'checkout' plan.id %}" class="w-100 btn btn-lg btn-warning text-dark fw-bold pulse-btn">Join Now</a>
+                {% else %}
+                  <button class="w-100 btn btn-lg btn-dark disabled">Purchased</button>
+                {% endif %}
+              {% else %}
+                <a href="{% url 'checkout' plan.id %}" class="w-100 btn btn-lg btn-outline-warning btn-hover">Join Now</a>
+              {% endif %}
+            {% else %}
+              <a href="{% url 'login' %}" class="w-100 btn btn-lg btn-outline-warning btn-hover">Join Now</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Plan Comparison Table -->
+    <h2 class="display-6 text-center my-5 text-warning glow-text">Compare Plans</h2>
+    <div class="table-responsive">
+      <table class="table table-dark text-center border rounded-3 shadow-lg">
+        <thead class="bg-dark">
+          <tr>
+            <th style="width: 34%;" class="text-warning"></th>
+            {% for plan in plans %}
+            <th style="width: 22%;" class="text-info">{{ plan.title }}</th>
+            {% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for feature in dfeatures %}
+          <tr>
+            <th scope="row" class="text-start text-light">{{ feature.title }}</th>
+            {% for plan in plans %}
+            <td>
+              {% if plan in feature.subplan.all %}
+              <i class="bi bi-check2-circle text-warning fs-4"></i>
+              {% else %}
+              <i class="bi bi-x-circle text-danger fs-4"></i>
+              {% endif %}
+            </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<style>
+
+  /* Dark Theme Base Styles */
+  .dark-theme, .content {
+    background-color: #121212;
+    color: #f8f9fa;
+  }
+  
+  /* Pricing Cards */
+  .pricing-card {
+    border-radius: 15px;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+  
+  .pricing-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(255, 193, 7, 0.2);
+  }
+  
+  .featured {
+    border: 3px solid #ffc107 !important;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.4);
+  }
+  
+  .bg-dark-card {
+    background-color: #1e1e1e;
+  }
+
+  .text{
+    color: white;
+  }
+
+  /* Button Enhancements */
+  .btn-hover {
+    transition: all 0.3s ease;
+  }
+  
+  .btn-hover:hover {
+    background-color: #ffc107;
+    color: #212529;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+  }
+  
+  .pulse-btn {
+    animation: pulse 2s infinite;
+    box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+  }
+  
+
+  
+
+  
+  /* Table Enhancements */
+  .table {
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  
+  /* Animations */
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+    }
+    
+    70% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+    }
+    
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+    }
+  }
+</style>
+{% endblock %}

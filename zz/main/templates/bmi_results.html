@@ -1,0 +1,472 @@
+{% extends 'base.html' %}
+{%block content%}
+{% load static %}
+{% load mathfilters %}
+<main>
+
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>BMI Results</title>
+        <script src="{% static 'chart.js' %}"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+
+            }
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            }
+
+            .table-container {
+                width: 60%;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                border: 1px solid #ddd;
+                text-align: center;
+            }
+
+            th {
+                background-color: #f4f4f4;
+            }
+
+            button {
+                background-color: red;
+                color: white;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: darkred;
+            }
+
+            .chart-container {
+                width: 35%;
+                display: flex;
+                justify-content: center;
+            }
+
+            canvas {
+                max-width: 100%;
+                height: 300px;
+            }
+
+            a {
+                text-decoration: none;
+                color: white;
+            }
+
+            .recommendations {
+                background: #ffffff;
+                transition: transform 0.3s ease-in-out;
+            }
+
+
+
+            .alert {
+                border-radius: 10px;
+                font-size: 1rem;
+            }
+
+            .progress {
+                height: 20px;
+                border-radius: 5px;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    flex-direction: column;
+                    align-items: center;
+                }
+
+                .table-container,
+                .chart-container {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <h1 class="text-center text-success fw-bold mt-3">
+        <i class="bi bi-bar-chart-line-fill me-2"></i>
+        <span class="fw-bold text-dark mb-4"> BMI Records</span>
+    </h1>
+    <div class="alert alert-info text-center">
+        {% if current_bmi %}
+        <h4>Your Current BMI: <strong>{{ current_bmi|floatformat:2 }}</strong></h4>
+        <p>
+            <strong>Status:</strong>
+            <span class="{{ status_class }}">{{ bmi_status }}</span>
+        </p>
+        {% else %}
+        <h4>No BMI records found. Please calculate your BMI.</h4>
+        {% endif %}
+    </div>
+
+    <div class="container">
+        <!-- Table (Left Side) -->
+        <div class="table-container">
+            <table>
+                <tr>
+
+                    <th>Height</th>
+                    <th>Weight</th>
+                    <th>BMI</th>
+                    <th>Date Recorded</th>
+                    <th>Action</th>
+                </tr>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.height|mul:100|floatformat:0 }} cm</td>
+                    <td>{{ record.weight }} kg</td>
+                    <td>{{ record.bmi|floatformat:2 }}</td>
+                    <td>{{ record.date_recorded }}</td>
+                    <td>
+                        <form method="post" action="{% url 'delete_bmi_record' record.id %}">
+                            {% csrf_token %}
+                            <button type="submit"
+                                onclick="return confirm('Are you sure you want to delete this record?');">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <button class="btn btn-primary">
+                <a href="{% url 'bmi_calculator' %}">Calculate BMI</a>
+            </button>
+            <button class="btn btn-success">
+                <a href="{% url 'user_dashboard' %}">Back to Dashboard</a>
+            </button>
+            <br>
+        </div>
+        <!-- Chart (Right Side) -->
+        <div class="chart-container">
+            <canvas id="bmiChart"></canvas>
+        </div>
+    </div>
+
+    <div class="recommendations card shadow-lg p-4">
+        <h3 class="text-center mb-4 ">
+            <i class="bi bi-heart-pulse me-2 fs-2 text-danger"></i>
+            <span class="fw-bold text-dark mb-4">Health Recommendations</span>
+        </h3>
+
+        {% if bmi_status == "Underweight" %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info d-flex align-items-center">
+                    <i class="bi bi-egg-fried me-2"></i>
+                    <div><strong>Food:</strong> Increase calorie intake with nuts, dairy, and protein-rich foods.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-info progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 80%;">
+                        High Priority
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="bi bi-person-arms-up me-2"></i>
+                    <div><strong>Exercise:</strong> Strength training to build muscle mass.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 70%;">
+                        Recommended
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif bmi_status == "Normal weight" %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info d-flex align-items-center">
+                    <i class="bi bi-emoji-smile me-2"></i>
+                    <div><strong>Food:</strong> Maintain a balanced diet with proteins, carbs, and healthy fats.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-info progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 60%;">
+                        Moderate
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success d-flex align-items-center">
+                    <i class="bi bi-lungs me-2"></i>
+                    <div><strong>Exercise:</strong> Regular moderate exercise like jogging or yoga.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 80%;">
+                        Essential
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif bmi_status == "Overweight" %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-warning d-flex align-items-center">
+                    <i class="bi bi-emoji-tear me-2"></i>
+                    <div><strong>Food:</strong> Reduce processed foods, increase fiber intake.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 90%;">
+                        Very Important
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-danger d-flex align-items-center">
+                    <i class="bi bi-bicycle me-2"></i>
+                    <div><strong>Exercise:</strong> Cardio workouts and strength training.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 85%;">
+                        Critical
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% elif bmi_status == "Obese" %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-warning d-flex align-items-center">
+                    <i class="bi bi-emoji-frown-fill me-2"></i>
+                    <div><strong>Food:</strong> Low-calorie, nutrient-dense diet with controlled portions.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 95%;">
+                        Urgent
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-danger d-flex align-items-center">
+                    <i class="bi bi-person-walking me-2"></i>
+                    <div><strong>Exercise:</strong> High-intensity workouts and daily movement.</div>
+                </div>
+                <div class="progress mb-3">
+                    <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated fw-bold"
+                        style="width: 95%;">
+                        Immediate Action Required
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <div class="text-center mt-4">
+            <button type="button" class="btn btn-primary shadow-sm" data-bs-toggle="modal"
+                data-bs-target="#learnMoreModal">
+                <i class="bi bi-book-half"></i> Learn More
+            </button>
+        </div>
+    </div>
+    <!-- Learn More Modal -->
+    <div class="modal fade" id="learnMoreModal" tabindex="-1" aria-labelledby="learnMoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="learnMoreModalLabel">
+                        <i class="bi bi-info-circle me-2"></i>Health & BMI Insights
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Your Body Mass Index (BMI) is a simple calculation using a person's height and weight. The
+                        result gives an indication of whether you're underweight, at a healthy weight, overweight, or
+                        obese.
+                    </p>
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered text-center align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Category</th>
+                                    <th>BMI Range</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="table-warning">
+                                    <td><strong>Underweight</strong></td>
+                                    <td>Less than 18.5</td>
+                                </tr>
+                                <tr class="table-success">
+                                    <td><strong>Normal weight</strong></td>
+                                    <td>18.5 – 24.9</td>
+                                </tr>
+                                <tr class="table-info">
+                                    <td><strong>Overweight</strong></td>
+                                    <td>25 – 29.9</td>
+                                </tr>
+                                <tr class="table-danger">
+                                    <td><strong>Obese</strong></td>
+                                    <td>30 and above</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <h6 class="fw-bold">Factors Affecting BMI:</h6>
+                    <ul>
+                        <li>Muscle mass (athletes may have high BMI due to muscle, not fat)</li>
+                        <li>Age and sex differences</li>
+                        <li>Bone density and body composition</li>
+                    </ul>
+                    <h6 class="fw-bold mt-3">When BMI Might Not Be Accurate:</h6>
+                    <ul>
+                        <li>Pregnant women</li>
+                        <li>Bodybuilders or athletes</li>
+                        <li>Elderly individuals with muscle loss</li>
+                    </ul>
+                    <div class="alert alert-secondary mt-4" role="alert">
+                        <strong>Note:</strong> Use BMI as a general guide. For a full picture of health, consider body
+                        fat %, waist-to-hip ratio, and professional medical advice.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    </div>
+</main>
+
+<script>
+    var ctx = document.getElementById('bmiChart').getContext('2d');
+
+    // Convert UTC timestamps to IST and format as 'DD MMM' (e.g., 29 Mar)
+    function convertToIST(utcDateStr) {
+        let utcDate = new Date(utcDateStr);
+        let istOffset = 5.5 * 60 * 60 * 1000; // IST is UTC+5:30
+        let istDate = new Date(utcDate.getTime() + istOffset);
+
+        // Format the date as 'DD MMM' (e.g., '29 Mar')
+        return istDate.toLocaleString('en-IN', {
+            day: '2-digit',
+            month: 'short'
+        });
+    }
+
+    // Convert labels (timestamps) from Django to formatted IST dates
+    var labels = JSON.parse('{{ labels|safe }}').map(date => convertToIST(date));
+
+    // Create gradient fill effect
+    var gradient = ctx.createLinearGradient(0, 0, 0, 300);
+    gradient.addColorStop(0, 'rgba(54, 162, 235, 0.8)');
+    gradient.addColorStop(1, 'rgba(54, 162, 235, 0)');
+
+    var bmiChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'BMI Trend',
+                data: JSON.parse('{{ bmi_values|safe }}'),
+                backgroundColor: gradient,
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 3,
+                tension: 0.4,
+                pointBackgroundColor: 'rgba(255, 99, 132, 1)',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 9,
+                pointHoverBackgroundColor: 'rgba(255, 99, 132, 1)',
+                pointHoverBorderColor: '#fff',
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
+            },
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#333',
+                        font: {
+                            size: 14,
+                            weight: 'bold'
+                        }
+                    }
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#fff',
+                    bodyColor: '#fff',
+                    bodyFont: {
+                        size: 14
+                    },
+                    padding: 12,
+                    cornerRadius: 6
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(200, 200, 200, 0.2)'
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        },
+                        autoSkip: true, // Prevents label clutter
+                        maxRotation: 0, // No rotation needed
+                        minRotation: 0
+                    }
+                },
+                y: {
+                    beginAtZero: false,
+                    grid: {
+                        color: 'rgba(200, 200, 200, 0.2)'
+                    },
+                    ticks: {
+                        color: '#333',
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+
+
+
+
+
+
+</main>
+{%endblock%}

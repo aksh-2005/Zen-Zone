@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <section class="container my-4">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-3">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-9">
+        <h3 class="section-title">Update Profile</h3>
+
+        {% if msg %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>{{ msg }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endif %}
+
+        <div class="card shadow-sm rounded-4 border-0 p-4">
+          <form method="post" action="">
+            {% csrf_token %}
+            <table class="table table-bordered mb-3">
+              {{ form.as_table }}
+            </table>
+            <div class="d-grid">
+              <input type="submit" value="Update" class="btn btn-primary btn-lg" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Section Heading */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 50px;
+      background-color: #28a745;
+      border-radius: 2px;
+    }
+
+    /* Form table styling */
+    .table td {
+      vertical-align: middle;
+    }
+
+    /* Card enhancements */
+    .card {
+      background-color: #fff;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Button transition */
+    .btn-primary {
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: scale(1.02);
+    }
+  </style>
+</main>
+{% endblock %}

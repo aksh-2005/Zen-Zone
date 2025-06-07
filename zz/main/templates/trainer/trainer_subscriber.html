@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <section class="container my-4">
+    <div class="row">
+      
+      <!-- Sidebar -->
+      <div class="col-3">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-9">
+        <h3 class="section-title">Subscriber List</h3>
+
+        <div class="card shadow-sm rounded-4 border-0 p-4">
+          {% if trainer_sub %}
+            <div class="list-group">
+              {% for ts in trainer_sub %}
+                <a href="#" class="list-group-item list-group-item-action subscriber-item">
+                  {{ ts.user.first_name }}
+                </a>
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-muted">No subscribers found.</p>
+          {% endif %}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <style>
+    /* Section Title Style */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 50px;
+      background-color: #28a745;
+      border-radius: 2px;
+    }
+
+    /* Card and list group item */
+    .card {
+      background-color: #fff;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    .subscriber-item {
+      transition: background-color 0.3s ease, padding-left 0.3s ease;
+    }
+
+    .subscriber-item:hover {
+      background-color: #f8f9fa;
+      padding-left: 1rem;
+    }
+  </style>
+</main>
+{% endblock %}

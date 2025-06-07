@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<main>
+	<section class="container my-4">
+		<h1 class="text-center mb-4 fw-bold text-black border-bottom pb-3">
+			<i class="fas fa-bolt text-black"></i> Start Your Plan!
+		</h1>
+		<table class="table table-bordered">
+			<thead class="table-warning">
+				<tr>
+					<th>Plan</th>
+					<th>Included Benefits</th>
+					<th>Billing</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						<table class="table-bordered table">
+							<tr>
+								<th>Name</th>
+								<td>{{plan.title}}</td>
+							</tr>
+							<tr>
+								<th>Price</th>
+								<td>₹{{plan.price}}/-</td>
+							</tr>
+							<tr>
+								<th>Max Member</th>
+								<td>30</td>
+							</tr>
+							<tr>
+								<th>Already Registered</th>
+								<td>15</td>
+							</tr>
+							<tr>
+								<th>Balance Seats</th>
+								<td>15</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<ul class="list-unstyled">
+							{% for feature in plan.subplanfeature_set.all %}
+							<li>{{ feature.title }}</li>
+							{% endfor %}
+						</ul>
+					</td>
+					<td>
+						<table class="table table-bordered">
+							<tr>
+								<th>Choose</th>
+								<th>Duration</th>
+								<th>Savings (%)</th>
+
+							</tr>
+							{% for discount in plan.plandiscount_set.all %}
+							<tr>
+								<td><input data-planprice="{{plan.price}}" data-discount="{{discount.total_discount}}"
+										type="radio" id="validity{{discount.id}}" name="validity"
+										class="select-validity" value="{{discount.total_months}}" /></td>
+								<td><label for="validity{{discount.id}}">{{discount.total_months}} Month</label></t>
+								<td>{{discount.total_discount}}%</td>
+							</tr>
+							{% endfor %}
+						</table>
+					</td>
+				</tr>
+			</tbody>
+			<tfoot class="table-info">
+				<tr>
+					<td></td>
+					<th>Final Price</th>
+					<td><b>₹<span class="totalAmount">{{plan.price}}</span>/-</b></td>
+				</tr>
+				<tr>
+					<td></td>
+					<th class="text-success">Discount Applied!</th>
+					<td class="text-success"><b>₹<span class="discountAmount ">0.00</span>/-</b></td>
+				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<form method="post" action="{% url 'checkout_session' plan.id %}">
+						{% csrf_token %}
+						<input type="hidden" name="final_price" id="final_price" value="">
+						<td><input type="submit" value="Proceed to Payment" class="btn btn-primary" /></td>
+					</form>
+				</tr>
+			</tfoot>
+		</table>
+
+		
+	</section>
+</main>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".select-validity").on('click', function () {
+            var _planPrice = parseFloat($(this).attr('data-planprice')) || 0;
+            var _planDisc = parseFloat($(this).attr('data-discount')) || 0;
+            var _planValid = parseInt($(this).val()) || 1;
+
+            var _totalPrice = _planPrice * _planValid;
+            var _discountAmount = (_totalPrice * _planDisc) / 100;
+            var _finalPrice = _totalPrice - _discountAmount;
+
+            $(".totalAmount").text(_finalPrice.toFixed(2));
+            $(".discountAmount").text(_discountAmount.toFixed(2));
+
+            // Set the value of the hidden input
+            $("#final_price").val(_finalPrice.toFixed(2));
+        });
+        // Trigger click on first radio button to initialize amount
+        $('.select-validity:first').click();
+    });
+</script>
+
+{% endblock %}

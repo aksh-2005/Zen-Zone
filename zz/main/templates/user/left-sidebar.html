@@ -1,0 +1,79 @@
+<main>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .list-group {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+		
+        .bar {
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+            border: none;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+        }
+        .bar:hover {
+            background-color: #f8f9fa;
+            transform: scale(1.02);
+        }
+        .bar.active {
+            background: linear-gradient(135deg, #007bff, #6610f2);
+            color: white;
+            font-weight: bold;
+        }
+        .bar i {
+            margin-right: 10px;
+        }
+        .badge {
+            font-size: 14px;
+        }
+        @media (max-width: 768px) {
+            .list-group {
+                box-shadow: none;
+                border-radius: 0;
+            }
+            .bar {
+                padding: 8px;
+                font-size: 14px;
+            }
+            .badge {
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 480px) {
+            .bar {
+                font-size: 12px;
+                padding: 6px;
+            }
+        }
+    </style>
+
+    <div class="list-group">
+        <a href="{% url 'user_dashboard' %}" class="bar list-group-item {% if request.path == '/user_dashboard' %} active {% endif %}">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </a>
+        <a href="{% url 'update_profile' %}" class="bar list-group-item {% if request.path == '/update_profile' %} active {% endif %}">
+            <i class="bi bi-person"></i> Profile
+        </a>
+        <a href="{% url 'change_password' %}" class="bar list-group-item {% if request.path == '/password/' %} active {% endif %}">
+            <i class="bi bi-key"></i> Change Password
+        </a>
+        <a href="{% url 'notifs' %}" class="bar list-group-item {% if request.path == '/notifs' %} active {% endif %}">
+            <i class="bi bi-bell"></i> Notifications
+			
+            <span class="float-end badge bg-info mt-1 ms-2">{{totalUnread}}</span>
+        </a>
+        <a href="{% url 'bmi_calculator' %}" class="bar list-group-item {% if request.path == '/bmi_calculator' %} active {% endif %}">
+            <i class="bi bi-calculator"></i> BMI Calculator
+        </a>
+        <a href="{% url 'report_for_trainer' %}" class="bar list-group-item {% if request.path == '/report_for_trainer' %} active {% endif %}">
+            <i class="bi bi-file-earmark-text"></i> Report
+        </a>
+    </div>
+</main>

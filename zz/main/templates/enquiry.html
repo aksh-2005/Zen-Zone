@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}" />
+
+<!-- Main Start -->
+<main class="dark-theme">
+    <!-- Enquiry Form Section -->
+    <section class="container my-5">
+        <h1 class="text-center mb-4 section-heading display-5 fw-bold text-warning glow-text">Get in touch</h1>
+        <div class="row justify-content-center align-items-center">
+            <!-- Contact Details & Map Section -->
+            <div class="col-md-5 text-center">
+                <div class="mb-4 p-3 bg-dark-card border-0 rounded shadow-lg">
+                    <h4 class="text-info fw-bold">Contact Us</h4>
+                    <p class="mb-1 text-light"><i class="bi bi-geo-alt text-danger"></i> Bengaluru, Karnataka, India</p>
+                    <p class="mb-1 text-light"><i class="bi bi-telephone text-success"></i> +91 90XXXXXXX1</p>
+                    <p class="mb-1 text-light"><i class="bi bi-envelope text-warning"></i> contact@company.com</p>
+                    <div class="mt-3">
+                        <h5 class="fw-bold text-light">Follow Us</h5>
+                        <a href="https://www.facebook.com" class="social-icon text-primary me-2"><i class="bi bi-facebook fs-3"></i></a>
+                        <a href="https://www.x.com" class="social-icon text-light me-2"><i class="bi bi-twitter-x fs-3"></i></a>
+                        <a href="https://www.instagram.com" class="social-icon text-danger me-2"><i class="bi bi-instagram fs-3"></i></a>
+                        <a href="https://www.whatsapp.com" class="social-icon text-success me-2"><i class="bi bi-whatsapp fs-3"></i></a>
+                        <a href="https://www.youtube.com" class="social-icon text-danger"><i class="bi bi-youtube fs-3"></i></a>
+                    </div>
+                </div>
+                <div class="map-container border border-warning rounded shadow-lg overflow-hidden">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31095.92410764251!2d77.57226070000001!3d12.971598800000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae167deb4561a5%3A0xb6e098685e03!2sBengaluru%2C%20Karnataka!5e0!3m2!1sen!2sin!4v1616581532354!5m2!1sen!2sin"
+                        width="100%" height="300" style="border:0; border-radius: 10px;" allowfullscreen=""
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+            <!-- Form Section -->
+            <div class="col-md-7">
+                {% if msg %}
+                <div class="alert alert-success alert-dismissible fade show bg-dark-card text-warning border-warning"
+                    role="alert">
+                    <strong>Message sent successfully!</strong> {{ msg }}
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                        aria-label="Close"></button>
+                </div>
+                {% endif %}
+
+                <div class="card shadow-lg border-0 bg-dark-card pricing-card">
+                    <div class="card-header text-info  text-center fw-bold">Fill in Your Details</div>
+                    <div class="card-body">
+                        <form method="post" action="{% url 'enquiry' %}">
+                            {% csrf_token %}
+                            {% if form.errors %}
+                            {% for field, errors in form.errors.items %}
+                            {% for error in errors %}
+                            <div class="text-danger small">
+                                <strong>{{ field|capfirst }}:</strong> {{ error }}
+                            </div>
+                            <br>
+                            {% endfor %}
+                            {% endfor %}
+
+                            {% endif %}
+                            <div class="mb-3">
+                                <label for="id_full_name" class="form-label fw-bold text-info">Full Name</label>
+                                {{ form.full_name }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_email" class="form-label fw-bold text-info">Email</label>
+                                {{ form.email }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_mobile" class="form-label fw-bold text-info">Mobile</label>
+                                {{ form.mobile }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="id_detail" class="form-label fw-bold text-info">Detail</label>
+                                {{ form.detail }}
+                            </div>
+                            <div class="text-center">
+                                <button type="submit"
+                                    class="btn btn-warning px-4 py-2 fw-bold shadow pulse-btn">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<style>
+    /* Dark Theme Base Styles */
+    .dark-theme,
+    .content {
+        background-color: #121212;
+        color: #f8f9fa;
+    }
+
+    /* Card Styles */
+    .pricing-card {
+        border-radius: 15px;
+        transition: all 0.4s ease-in-out;
+        overflow: hidden;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    }
+
+    .pricing-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(255, 193, 7, 0.2);
+    }
+
+    .bg-dark-card {
+        background-color: #1e1e1e;
+    }
+
+
+
+
+    /* Form Styling */
+    .form-control {
+        background-color: #2d2d2d;
+        border: 1px solid #444;
+        color: #fff;
+    }
+
+    .form-control:focus {
+        background-color: #333;
+        border-color: #ffc107;
+        box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+        color: #fff;
+    }
+
+    /* Button Animation */
+    .pulse-btn {
+        animation: pulse 2s infinite;
+        box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+        transition: all 0.3s ease;
+    }
+
+    .pulse-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    }
+
+    /* Social Icons */
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+        border-radius: 50%;
+        padding: 10px;
+        margin: 0 6px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        background-color: #2d2d2d;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+
+    .social-icon:hover {
+        transform: scale(1.2);
+        color: #ffffff !important;
+        background: linear-gradient(45deg, #ffc107, #ff9800);
+        box-shadow: 0 5px 15px rgba(255, 193, 7, 0.4);
+    }
+
+    .social-icon:active {
+        transform: scale(0.9);
+        transition: transform 0.1s ease;
+    }
+
+    /* Animation Keyframes */
+    @keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0.7);
+        }
+
+        70% {
+            transform: scale(1.05);
+            box-shadow: 0 0 0 10px rgba(255, 193, 7, 0);
+        }
+
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(255, 193, 7, 0);
+        }
+    }
+
+    /* Map Container */
+    .map-container {
+        overflow: hidden;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .map-container:hover {
+        box-shadow: 0 10px 20px rgba(255, 193, 7, 0.3);
+    }
+</style>
+{% endblock %}

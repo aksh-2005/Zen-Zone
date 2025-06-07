@@ -1,0 +1,18 @@
+/* Styling for brand/logo image in navbar */
+.brand-link img, .navbar-brand img {
+    max-height: 30px !important;  /* Reduce size for both places */
+    width: auto !important;
+    display: block;
+    margin: 0 auto;
+    object-fit: contain; /* Ensures the image scales correctly without distortion */
+}
+
+/* Optional: Set a specific width for the logo */
+.navbar-brand img {
+    width: 120px; /* Adjusted width to make it smaller */
+}
+
+/* You can add margin-top or padding if you want some space around the logo */
+.navbar-brand {
+    padding-top: 5px;  /* Reduced padding to keep it compact */
+}

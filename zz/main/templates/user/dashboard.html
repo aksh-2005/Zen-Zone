@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+{% block content %}
+<style>
+  /* General Styling */
+  .dashboard-container {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+  }
+  .dashboard-title {
+      border-bottom: 3px solid #007bff;
+      display: inline-block;
+      padding-bottom: 5px;
+      font-weight: bold;
+  }
+  .card {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      transition: transform 0.2s ease-in-out;
+  }
+  .card:hover {
+      transform: scale(1.03);
+  }
+  .card-header {
+      background: linear-gradient(135deg, #007bff, #6610f2);
+      color: white;
+      font-weight: bold;
+      text-align: center;
+  }
+  .card-body {
+      text-align: center;
+  }
+  .card-footer a {
+      font-size: 18px;
+      margin-right: 10px;
+      color: #007bff;
+      transition: color 0.3s ease;
+  }
+  .card-footer a:hover {
+      color: #0056b3;
+  }
+  .btn-success {
+      font-size: 14px;
+      padding: 5px 10px;
+  }
+  .modal-content {
+      border-radius: 15px;
+  }
+  .mail {
+    text-decoration: none;
+  }
+  a{
+    text-decoration: none;
+  }
+</style>
+
+<main>
+  <section class="container my-4">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-3">
+        {% include 'user/left-sidebar.html' %}
+      </div>
+
+      <!-- Dashboard Content -->
+      <div class="col-9">
+        <div class="dashboard-container">
+          <h3 class="dashboard-title">Dashboard</h3>
+
+          {% if message %}
+          <div class="alert alert-warning mt-3">
+            {{ message }}
+          </div>
+          {% endif %}
+
+          <div class="row mt-4">
+            <!-- Current Plan -->
+            <div class="col-md-4">
+              <div class="card">
+                <h4 class="card-header">Current Plan</h4>
+                <div class="card-body">
+                  {% if current_plan %}
+                  <h5 class="card-text">{{ current_plan.plan }}</h5>
+                  <p>Price: ₹{{ current_plan.price }}</p>
+                  <p>Purchase date: {{ current_plan.reg_date }}</p>
+                  <p>Expiry date: {{ enddate }}</p>
+                  {% else %}
+                  <p class="text-danger">You have not purchased a subscription.</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- Assigned Trainer -->
+            <div class="col-md-4">
+              <div class="card">
+                <h4 class="card-header">Assigned Trainer</h4>
+                <div class="card-body">
+                  {% if my_trainer %}
+                  <h5 class="card-text">{{ my_trainer.trainer.full_name }}</h5>
+                  <p>Mobile: {{ my_trainer.trainer.mobile }}</p>
+                  <p>Email: <a class="mail" href="mailto:{{ my_trainer.trainer.email }}">{{ my_trainer.trainer.email }}</a></p>
+                  {% else %}
+                  <p class="text-danger">No trainer assigned.</p>
+                  {% endif %}
+                </div>
+
+                {% if my_trainer %}
+                <div class="card-footer text-center">
+                  <a href="{{ my_trainer.trainer.facebook }}" title="Facebook" style="color: #1877F2;">
+                    <i class="bi bi-facebook"></i>
+                  </a>
+                  <a href="{{ my_trainer.trainer.instagram }}" title="Instagram" style="color: #E4405F;">
+                    <i class="bi bi-instagram"></i>
+                  </a>
+                  <a href="{{ my_trainer.trainer.whatsapp }}" title="WhatsApp" style="color: #25D366;">
+                    <i class="bi bi-whatsapp"></i>
+                  </a>
+                  <a href="{{ my_trainer.trainer.youtube }}" title="YouTube" style="color: #FF0000;">
+                    <i class="bi bi-youtube"></i>
+                  </a>
+                  <a href="{{ my_trainer.trainer.twitter }}" title="X" style="color: #000000;">
+                    <i class="bi bi-twitter-x"></i>
+                  </a>
+                  
+
+                  <!-- Achievement Button -->
+                  <button type="button" data-bs-toggle="modal" data-bs-target="#AchivementModal{{ my_trainer.id }}"
+                    title="Achievement" class="mt-2 btn btn-sm btn-success">
+                    <i class="bi bi-award"></i> Achievements
+                  </button>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Trainer Achievements Modal -->
+{% if my_trainer %}
+<div class="modal fade" id="AchivementModal{{ my_trainer.id }}" tabindex="-1"
+     aria-labelledby="exampleModalLabel{{ my_trainer.id }}" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fs-5" id="exampleModalLabel{{ my_trainer.id }}">
+          Trainer Achievements
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Detail</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for achieve in my_trainer.trainer.trainerachivement_set.all %}
+            <tr>
+              <td>{{ achieve.title }}</td>
+              <td>{{ achieve.detail }}</td>
+              <td>{{ achieve.year }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="text-center text-muted">No achievements available.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

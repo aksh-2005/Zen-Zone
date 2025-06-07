@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap-icons/font/bootstrap-icons.css' %}" />
+
+<main class="dark-theme py-5">
+  <section class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <h1 class="text-center mb-4 section-heading display-5 fw-bold text-warning">
+          {{ page.title }}
+        </h1>
+        <div class="bg-dark-card p-4 rounded shadow-lg pricing-card">
+          <p class="lead">
+            <strong>
+              {{ page.detail }}
+            </strong>
+          </p>
+        </div>
+      </div>
+
+      {% if request.path == '/pagedetail/1/' %}
+      <div class="col-lg-8 mt-4 bg-dark-card p-4 rounded shadow-lg pricing-card text-light">
+        <p>
+        <h2 class="text-info">
+          <i class="bi bi-heart-pulse text-warning fs-2 me-2"></i> Zen Zone – Mind & Body Wellness
+        </h2>
+        <br>
+        Zen Zone was born from a simple yet powerful belief: fitness is not just about physical exertion—it's a journey
+        of self-discovery, balance, and holistic well-being.
+        </p>
+        <p>
+          Zen Zone was born from a simple yet powerful belief: fitness is not just about physical exertion—it’s a
+          journey of self-discovery, balance, and holistic well-being.
+
+          What started as a small community of passionate fitness enthusiasts has now blossomed into a thriving
+          sanctuary where individuals of all backgrounds come together to support, inspire, and uplift one another. We
+          believe that true wellness extends beyond workouts—it encompasses mental clarity, emotional strength, and a
+          deep connection between mind and body.
+        </p>
+        <p>
+          At Zen Zone, we strive to create an inclusive environment where everyone, regardless of age, experience, or
+          fitness level, feels welcome, encouraged, and empowered to achieve their personal goals. Our approach is not
+          about quick fixes or unrealistic standards—it’s about cultivating sustainable habits, fostering
+          self-confidence, and embracing a lifestyle that prioritizes overall well-being.
+        </p>
+        <p>
+          Through expert guidance, innovative programs, and a community-driven atmosphere, we aim to help each
+          individual embark on a transformative fitness journey. Whether you seek strength, flexibility, stress relief,
+          or simply a place to recharge, Zen Zone is more than just a fitness center—it’s a movement, a mindset, and a
+          family that supports you every step of the way.
+        </p>
+        <strong>Welcome to Zen Zone—where wellness is a way of life.</strong>
+
+      </div>
+
+      {% elif request.path == '/pagedetail/2/' %}
+      <div class="col-lg-8 mt-4 bg-dark-card p-4 rounded shadow-lg pricing-card text-light">
+        <h2 class="text-info"><i class="bi bi-shield-shaded text-warning fs-2 me-2"></i>
+          Your Privacy Matters</h2>
+        <p>
+          At <strong class="text-warning">Zen Zone</strong>, we prioritize your privacy and are committed to protecting
+          your personal information. This policy explains how we collect, use, and safeguard your data to ensure a
+          secure and seamless experience.
+        </p>
+        <ul class="points">
+          <li>We collect only necessary data to enhance your experience and provide personalized fitness programs.</li>
+          <li>Your information is never shared with third parties without your explicit consent.</li>
+          <li>All transactions, communications, and stored data are securely encrypted to ensure maximum protection.
+          </li>
+          <li>We comply with data protection laws and industry standards to safeguard your personal details.</li>
+          <li>Membership and payment details are processed through trusted and secure platforms.</li>
+          <li>You have full control over your personal information and can request access, updates, or deletion at any
+            time.</li>
+          <li>We retain your data only for as long as necessary to fulfill legal and business obligations.</li>
+          <li>Cookies and tracking technologies may be used to enhance website functionality and user experience.</li>
+          <li>You can opt out of promotional emails and marketing communications at any time.</li>
+          <li>For any concerns or inquiries regarding your data privacy, please contact us at <strong
+              class="text-warning">zenzone@gmail.com</strong>.</li>
+        </ul>
+      </div>
+
+      {% elif request.path == '/pagedetail/3/' %}
+      <div class="col-lg-8 mt-4 bg-dark-card p-4 rounded shadow-lg pricing-card text-light">
+        <h2 class="text-info"><i class="bi-exclamation-triangle-fill text-warning fs-2 me-2"></i>
+          Gym Membership Rules & Guidelines</h2>
+        <p>
+          By becoming a member and using our facilities, you agree to abide by the following terms and guidelines:
+        </p>
+        <ul class="points">
+          <li>Membership is subject to adherence to our gym rules and code of conduct.</li>
+          <li>All membership fees and class subscriptions are non-refundable.</li>
+          <li>Respect for staff, trainers, and fellow members is mandatory at all times.</li>
+          <li>Violating gym policies may result in suspension or termination of membership.</li>
+          <li>The gym is not responsible for lost, stolen, or damaged personal belongings.</li>
+          <li>Members should consult a doctor before beginning any fitness program.</li>
+          <li>Use of gym equipment must follow safety guidelines to prevent injuries.</li>
+          <li>Unauthorized personal training, promotions, or business activities within the gym are prohibited.</li>
+          <li>Facility hours, class schedules, and equipment availability may change without notice.</li>
+          <li>Members agree to receive gym-related updates, offers, and notifications (opt-out available).</li>
+          <li>Management reserves the right to update these terms, with changes posted on our website.</li>
+        </ul>
+      </div>
+
+      {% else %}
+      <div class="col-lg-8 mt-4 bg-dark-card p-4 rounded shadow-lg pricing-card">
+        <p class="text-muted">No additional content available for this page.</p>
+      </div>
+      {% endif %}
+
+    </div>
+  </section>
+</main>
+
+<style>
+  /* Dark Theme Base Styles */
+  .dark-theme {
+    background-color: #121212;
+    color: #f8f9fa;
+  }
+
+  /* Card Styles */
+  .pricing-card {
+    border-radius: 15px;
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .pricing-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(255, 193, 7, 0.2);
+  }
+
+  .bg-dark-card {
+    background-color: #1e1e1e;
+    border: none;
+  }
+
+  /* Section Heading Styles */
+  .section-heading {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+  }
+
+  .section-heading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #ffc107;
+  }
+
+  /* Glow Text Effect */
+  .glow-text {
+    text-shadow: 0 0 10px rgba(255, 193, 7, 0.5);
+  }
+
+  /* List Styling */
+  .points {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .points li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .points li:before {
+    content: "\F270";
+    font-family: "bootstrap-icons";
+    position: absolute;
+    left: 0;
+    top: 3px;
+    color: #ffc107;
+    font-size: 0.8rem;
+  }
+
+  /* Link Styling */
+  a {
+    color: #ffc107;
+    transition: color 0.3s ease;
+  }
+
+  a:hover {
+    color: #ffdb58;
+    text-decoration: none;
+  }
+</style>
+
+{% endblock %}

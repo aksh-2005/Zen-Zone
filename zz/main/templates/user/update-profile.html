@@ -1,0 +1,85 @@
+{% extends 'base.html' %} 
+{% block content %}
+
+<style>
+  /* Profile Update Styling */
+  .profile-container {
+      background-color: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .profile-title {
+      border-bottom: 3px solid #007bff;
+      display: inline-block;
+      padding-bottom: 5px;
+      font-weight: bold;
+  }
+  .card {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      transition: transform 0.2s ease-in-out;
+  }
+  .card:hover {
+      transform: scale(1.02);
+  }
+  .alert {
+      animation: fadeIn 0.5s ease-in-out;
+  }
+  @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+  }
+  .btn-primary {
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s ease-in-out;
+  }
+  .btn-primary:hover {
+      background: #0056b3;
+  }
+</style>
+
+<main>
+  <section class="container my-4">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-3">
+        {% include 'user/left-sidebar.html' %}
+      </div>
+
+      <!-- Profile Update Form -->
+      <div class="col-9">
+        <div class="profile-container">
+          <h3 class="profile-title">Update Profile</h3>
+
+          {% if msg %}
+          <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+            <strong>{{ msg }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endif %}
+
+          <div class="card mt-4">
+            <div class="card-body">
+              <form method="post" action="">
+                {% csrf_token %}
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    {{ form.as_table }}
+                  </table>
+                </div>
+                <div class="text-center">
+                  <input type="submit" class="btn btn-primary px-4" value="Update Profile">
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

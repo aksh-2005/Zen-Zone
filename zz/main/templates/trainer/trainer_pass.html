@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% block content %}
+<main>
+  <section class="container my-4">
+    <div class="row">
+      
+      <!-- Sidebar -->
+      <div class="col-3">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+
+      <!-- Main Content -->
+      <div class="col-9">
+        <h3 class="section-title">Change Password</h3>
+
+        <!-- Display messages -->
+        {% if messages %}
+          {% for message in messages %}
+            <div class="alert {% if message.tags == 'error' %}alert-danger{% else %}alert-success{% endif %} alert-dismissible fade show" role="alert">
+              <strong>{{ message }}</strong>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+        <!-- Password Change Form -->
+        <div class="card shadow-sm rounded-4 border-0 p-4">
+          <form method="post" action="">
+            {% csrf_token %}
+            <table class="table table-bordered mb-3">
+              {{ form.as_table }}
+            </table>
+            <div class="text-center">
+              <input type="submit" class="btn btn-primary " value="Change Password" />
+            </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <style>
+    /* Section Heading */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 50px;
+      background-color: #28a745;
+      border-radius: 2px;
+    }
+
+    /* Table alignment */
+    .table td {
+      vertical-align: middle;
+    }
+
+    /* Card styling */
+    .card {
+      background-color: #fff;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Button */
+    .btn-primary {
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      transform: scale(1.02);
+    }
+  </style>
+</main>
+{% endblock %}

@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+  .login-section {
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    padding: 2.5rem;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+  }
+  
+  .section-heading {
+    font-weight: 700;
+    color: #2d3748;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .section-heading:after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #f1af63, #f6b85c);
+    border-radius: 3px;
+  }
+  
+  .table-bordered {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  .table-bordered th {
+    background-color: #f1f5f9;
+    padding: 1rem;
+    font-weight: 600;
+  }
+  
+  .table-bordered td {
+    padding: 1rem;
+  }
+  
+ 
+  
+  .btn-dark {
+    background: linear-gradient(to right, #3f3f46, #52525b);
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(63, 63, 70, 0.4);
+  }
+  
+  .form-control {
+    border-radius: 6px;
+    padding: 0.75rem;
+    border: 1px solid #e2e8f0;
+  }
+  
+  .form-control:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    border-color: #6366f1;
+  }
+  
+  .already-logged-in {
+    animation: fadeIn 0.5s ease-in-out;
+    border-left: 5px solid #10b981;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+{% if not request.user.is_authenticated %}
+<!-- Main Start -->
+<main>
+  <!-- Services -->
+  <section class="container login-section">
+    <h1 class="text-center section-heading">Welcome Back</h1>
+    <div class="row">
+      <div class="col-md-6 offset-3">
+        {% if msg %}
+        <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+          <i class="bi bi-check-circle-fill me-2"></i> {{msg}}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        
+        <form method="post" action="">
+          {% csrf_token %}
+          <table class="table table-bordered">
+            {{form.as_table}}
+            <tr>
+              <td colspan="2">
+                <button type="submit" class="btn btn-warning">
+                  <i class="fas fa-sign-in-alt me-2"></i> Login
+                </button>
+				<style>
+					 .btn-warning {
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+  }
+  
+  .btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+  }
+				</style>
+              </td>
+            </tr>
+          </table>
+        </form>
+        
+        <div class="text-center mt-4 pt-3 border-top">
+          <p class="fs-6 fw-semibold text-muted">Not a member yet? Create your account today!</p>
+          <a href="{% url 'signup' %}" class="btn btn-dark btn-sm rounded-pill px-4 py-2 shadow-lg">
+            <i class="fas fa-user-plus me-1"></i> Sign Up
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End -->
+</main>
+
+{% else %}
+<div class="container mt-5 mb-5">
+  <div class="alert alert-success text-center shadow-sm rounded-3 p-4 already-logged-in" role="alert">
+    <i class="bi bi-check-circle-fill me-2 fs-4"></i> 
+    <span class="fw-semibold fs-5">You are already logged in!</span>
+    <p class="mt-2 mb-0 text-muted">Feel free to explore the site or visit your dashboard.</p>
+	<a href="{% url 'user_dashboard' %}" class="text-success">Your Dashboard</a>
+  </div>
+</div>
+{% endif %}
+<!-- End -->
+{% endblock %}

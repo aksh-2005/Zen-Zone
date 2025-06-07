@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="container py-5 text-center">
+  <div class="alert alert-success shadow-sm p-4 rounded" role="alert">
+    <h1 class="display-4 mb-3">Payment Successful</h1>
+    <p class="lead">Thank you! Your payment has been processed successfully.</p>
+    <hr>
+  </div>
+  <a href="{% url 'user_dashboard' %}" class="btn btn-success mt-4">Back to Dashboard</a>
+</main>
+{% endblock %}

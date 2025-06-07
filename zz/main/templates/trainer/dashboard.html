@@ -1,0 +1,109 @@
+{% extends 'base.html' %} 
+{% block content %}
+<main>
+  <section class="container my-4">
+    <div class="row">
+      <div class="col-3">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+      <div class="col-9">
+        <h3 class="dashboard-title">Trainer Dashboard</h3>
+
+        <div class="row mt-4">
+          
+          <!-- Latest Subscriber -->
+          <div class="col-md-6 mb-4">
+            <div class="card shadow-sm rounded-4 border-0">
+              <h4 class="card-header">Latest Subscriber</h4>
+              <div class="card-body">
+                {% with trainer_sub.last as latest_sub %}
+                  {% if latest_sub %}
+                    <div class="list-group">
+                      <a href="#" class="lst list-group-item">{{ latest_sub.user.first_name }}</a>
+                    </div>
+                  {% else %}
+                    <p class="text-muted">No subscribers yet.</p>
+                  {% endif %}
+                {% endwith %}
+              </div>
+            </div>
+          </div>
+
+          <!-- Latest Payment -->
+          <div class="col-md-6 mb-4">
+            <div class="card shadow-sm rounded-4 border-0">
+              <h4 class="card-header">Latest Payment</h4>
+              <div class="card-body">
+                {% with trainer_pay.last as latest_payment %}
+                  {% if latest_payment %}
+                    <div class="list-group">
+                      <div class="lst list-group-item">
+                        <strong>Amount:</strong> ₹{{ latest_payment.amt }}
+                      </div>
+                      <div class="lst list-group-item">
+                        <strong>Date:</strong> {{ latest_payment.amt_date }}
+                      </div>
+                    </div>
+                  {% else %}
+                    <p class="text-muted">No payments yet.</p>
+                  {% endif %}
+                {% endwith %}
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    /* Dashboard Heading Style */
+    .dashboard-title {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #333;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.4rem;
+    }
+
+    .dashboard-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 50px;
+      background-color: #28a745;
+      border-radius: 2px;
+    }
+
+    /* Revert to Original Green Card Header */
+    .card-header {
+      background: linear-gradient(135deg, #28a745, #218838);
+      color: white;
+      font-weight: bold;
+      border-top-left-radius: 1rem;
+      border-top-right-radius: 1rem;
+    }
+
+    .lst {
+      transition: background-color 0.3s ease-in-out;
+    }
+
+    .lst:hover {
+      background-color: #f1f1f1;
+    }
+
+    .card {
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</main>
+{% endblock %}
