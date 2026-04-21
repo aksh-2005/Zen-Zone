@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-=5m^pupb1t+iru$%=q9#revokbwdl2(q)co7#zvhjc7tyr5a+s
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['zenzone-lovat.vercel.app', 'localhost', '127.0.0.1']
 
 # Application definition
 
