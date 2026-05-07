@@ -24,7 +24,6 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 INSTALLED_APPS = [
     'main',
-    'zz.main.apps.MainConfig',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
