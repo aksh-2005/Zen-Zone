@@ -1,5 +1,15 @@
 {
-  "buildCommand": "pip install --break-system-packages -r ../requirements.txt && python manage.py collectstatic --noinput --ignore=*.map",
-  "outputDirectory": "staticfiles",
-  "framework": null
+  "version": 2,
+  "builds": [
+    {
+      "src": "zz/zenzone/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "zz/zenzone/wsgi.py"
+    }
+  ]
 }
