@@ -11,6 +11,9 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'zz.zenzone.settings')
+os.environ.setdefault(
+    "DJANGO_SETTINGS_MODULE",
+    "zz.zenzone.settings"
+)
 
 application = get_wsgi_application()
