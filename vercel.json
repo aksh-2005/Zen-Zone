@@ -1,5 +1,5 @@
 {
-  "buildCommand": "pip install --break-system-packages -r ../requirements.txt && python manage.py collectstatic --noinput",
+  "buildCommand": "pip install --break-system-packages -r ../requirements.txt && python manage.py collectstatic --noinput && python manage.py migrate",
   "outputDirectory": "staticfiles",
   "framework": null
 }
