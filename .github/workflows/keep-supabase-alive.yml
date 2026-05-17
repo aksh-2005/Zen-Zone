@@ -1,4 +1,4 @@
-name: Keep Supabase Alivee
+name: Keep Supabase Alive
 
 on:
   schedule:
@@ -12,11 +12,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
       - name: Ping Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -25,10 +20,9 @@ jobs:
           python -c "
           import urllib.request
           import os
-          url = os.environ['SUPABASE_URL'] + '/rest/v1/'
+          url = os.environ['SUPABASE_URL'] + '/auth/v1/health'
           req = urllib.request.Request(url)
           req.add_header('apikey', os.environ['SUPABASE_ANON_KEY'])
-          req.add_header('Authorization', 'Bearer ' + os.environ['SUPABASE_ANON_KEY'])
           resp = urllib.request.urlopen(req)
           print('Supabase pinged! Status:', resp.status)
           "
