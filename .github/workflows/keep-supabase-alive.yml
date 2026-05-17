@@ -30,6 +30,6 @@ jobs:
           from supabase import create_client
           import os
           client = create_client(os.environ['SUPABASE_URL'], os.environ['SUPABASE_ANON_KEY'])
-          client.table('auth_user').select('id').limit(1).execute()
+          client.table('main_enquiry').select('id').limit(1).execute()
           print('Supabase pinged!')
           "
