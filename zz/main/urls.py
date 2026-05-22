@@ -1,21 +1,17 @@
 
-from django.urls import path,include
-from .import views
+from django.urls import path, include
+from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.shortcuts import render
 from .views import ChangePasswordView
-from django.contrib.auth.views import PasswordChangeDoneView
 
 def password_change_done(request):
     return render(request, 'registration/pass_done.html')
 
 urlpatterns = [
 
-    path('admin/', admin.site.urls),
-   
-    path('',views.home,name='home'), 
+    path('', views.home, name='home'), 
     path('pagedetail/<int:id>/',views.page_detail,name='pagedetail'),
     path('enquiry',views.enquiry,name='enquiry'),
     path('pricing',views.pricing,name='pricing'), 
@@ -58,4 +54,4 @@ if settings.DEBUG:
 
 handler404 = 'main.views.custom_404'
 handler500 = 'main.views.custom_500'
-handler500 = 'main.views.custom_403'
+handler403 = 'main.views.custom_403'

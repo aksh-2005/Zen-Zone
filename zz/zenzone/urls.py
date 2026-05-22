@@ -23,3 +23,8 @@ urlpatterns = [
     path('account/',include('django.contrib.auth.urls')),
   
 ]
+
+handler404 = 'main.views.custom_404'
+handler500 = 'main.views.custom_500'
+handler403 = 'main.views.custom_403'
+

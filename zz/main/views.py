@@ -390,18 +390,16 @@ def delete_bmi_record(request, record_id):
     return redirect('bmi_results')
 
 def custom_404(request, exception):
-    return render(request, 'user/404.html', status=404)
+    return render(request, '404.html', status=404)
 
 def custom_500(request):
-    return render(request, 'user/404.html', status=500)
+    return render(request, '404.html', status=500)
 
-def custom_403(request):
-    return render(request, 'user/404.html', status=403)
-
-from django.shortcuts import render
+def custom_403(request, exception):
+    return render(request, '404.html', status=403)
 
 def test_404(request):
-    response = render(request, 'user/404.html')
+    response = render(request, '404.html')
     response.status_code = 404
     return response
 
