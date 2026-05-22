@@ -2,18 +2,36 @@
 {% block content %}
 <main>
   <section class="container my-4">
+
+    <!-- Mobile Sidebar Toggle -->
+    <div class="d-md-none mb-3">
+      <button class="btn trainer-toggle-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#trainerMobileSidebarSub">
+        <i class="bi bi-list me-2"></i> Trainer Menu
+      </button>
+    </div>
+
+    <!-- Offcanvas Sidebar (Mobile) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="trainerMobileSidebarSub" aria-labelledby="trainerMobileSidebarSubLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="trainerMobileSidebarSubLabel">Trainer Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+    </div>
+
     <div class="row">
-      
-      <!-- Sidebar -->
-      <div class="col-3">
+      <!-- Desktop Sidebar -->
+      <div class="col-md-3 d-none d-md-block">
         {% include 'trainer/left-sidebar.html' %}
       </div>
 
       <!-- Main Content -->
-      <div class="col-9">
+      <div class="col-12 col-md-9">
         <h3 class="section-title">Subscriber List</h3>
 
-        <div class="card shadow-sm rounded-4 border-0 p-4">
+        <div class="card shadow-sm rounded-4 border-0 p-3 p-md-4">
           {% if trainer_sub %}
             <div class="list-group">
               {% for ts in trainer_sub %}
@@ -32,6 +50,12 @@
   </section>
 
   <style>
+    .trainer-toggle-btn {
+      background: linear-gradient(135deg, #28a745, #218838);
+      border: none;
+      color: white;
+      border-radius: 8px;
+    }
     /* Section Title Style */
     .section-title {
       font-size: 1.8rem;

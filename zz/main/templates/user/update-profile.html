@@ -1,4 +1,4 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 {% block content %}
 
 <style>
@@ -38,18 +38,43 @@
   .btn-primary:hover {
       background: #0056b3;
   }
+  .sidebar-toggle-btn {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
 </style>
 
 <main>
   <section class="container my-4">
+
+    <!-- Mobile Sidebar Toggle -->
+    <div class="d-md-none mb-3">
+      <button class="btn sidebar-toggle-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userMobileSidebar2">
+        <i class="bi bi-list me-2"></i> Navigation Menu
+      </button>
+    </div>
+
+    <!-- Offcanvas Sidebar (Mobile) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="userMobileSidebar2" aria-labelledby="userMobileSidebarLabel2">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="userMobileSidebarLabel2">My Account</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        {% include 'user/left-sidebar.html' %}
+      </div>
+    </div>
+
     <div class="row">
-      <!-- Sidebar -->
-      <div class="col-3">
+      <!-- Desktop Sidebar -->
+      <div class="col-md-3 d-none d-md-block">
         {% include 'user/left-sidebar.html' %}
       </div>
 
       <!-- Profile Update Form -->
-      <div class="col-9">
+      <div class="col-12 col-md-9">
         <div class="profile-container">
           <h3 class="profile-title">Update Profile</h3>
 

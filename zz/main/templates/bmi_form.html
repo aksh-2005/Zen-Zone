@@ -32,47 +32,74 @@
   .btn-primary:hover {
       background: #0056b3;
   }
+  .sidebar-toggle-btn {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
+  @media (max-width: 576px) {
+    .bmi-container {
+      padding: 12px;
+    }
+  }
 </style>
 
 <main class="container my-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-3">
-            {% include 'user/left-sidebar.html' %}
-        </div>
 
-        <!-- BMI Calculator Form -->
-        <div class="col-9">
-            <div class="bmi-container">
-                <h3 class="bmi-title">BMI Calculator</h3>
+  <!-- Mobile Sidebar Toggle -->
+  <div class="d-md-none mb-3">
+    <button class="btn sidebar-toggle-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userMobileSidebar4">
+      <i class="bi bi-list me-2"></i> Navigation Menu
+    </button>
+  </div>
 
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    {{ form.as_table }}
-                                </table>
-                            </div>
-                            <div class="text-center">
-                                <button type="submit" class="btn btn-primary px-4">Calculate BMI</button>
-								<a href="{% url 'bmi_results' %}" class="btn btn-success px-4">BMI Records</a>
-                            </div>
-							
-                        </form>
-						
-                    </div>
-					
+  <!-- Offcanvas Sidebar (Mobile) -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="userMobileSidebar4" aria-labelledby="userMobileSidebarLabel4">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="userMobileSidebarLabel4">My Account</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      {% include 'user/left-sidebar.html' %}
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Desktop Sidebar -->
+    <div class="col-md-3 d-none d-md-block">
+        {% include 'user/left-sidebar.html' %}
+    </div>
+
+    <!-- BMI Calculator Form -->
+    <div class="col-12 col-md-9">
+        <div class="bmi-container">
+            <h3 class="bmi-title">BMI Calculator</h3>
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                {{ form.as_table }}
+                            </table>
+                        </div>
+                        <div class="d-flex flex-wrap gap-2 justify-content-center">
+                            <button type="submit" class="btn btn-primary px-4">Calculate BMI</button>
+                            <a href="{% url 'bmi_results' %}" class="btn btn-success px-4">BMI Records</a>
+                        </div>
+                    </form>
                 </div>
-				<div class="text-center mt-3">
-					<small class="text-muted">
-						Note: BMI (Body Mass Index) is a simple calculation using height and weight. It helps indicate whether you are underweight, normal weight, overweight, or obese.
-					</small>
-				</div>
+            </div>
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    Note: BMI (Body Mass Index) is a simple calculation using height and weight. It helps indicate whether you are underweight, normal weight, overweight, or obese.
+                </small>
             </div>
         </div>
     </div>
+  </div>
 </main>
 
 {% endblock %}

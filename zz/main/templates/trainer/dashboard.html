@@ -2,18 +2,40 @@
 {% block content %}
 <main>
   <section class="container my-4">
-    <div class="row">
-      <div class="col-3">
+
+    <!-- Mobile Sidebar Toggle -->
+    <div class="d-md-none mb-3">
+      <button class="btn trainer-toggle-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#trainerMobileSidebar">
+        <i class="bi bi-list me-2"></i> Trainer Menu
+      </button>
+    </div>
+
+    <!-- Offcanvas Sidebar (Mobile) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="trainerMobileSidebar" aria-labelledby="trainerMobileSidebarLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="trainerMobileSidebarLabel">Trainer Menu</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body p-0">
         {% include 'trainer/left-sidebar.html' %}
       </div>
-      <div class="col-9">
+    </div>
+
+    <div class="row">
+      <!-- Desktop Sidebar -->
+      <div class="col-md-3 d-none d-md-block">
+        {% include 'trainer/left-sidebar.html' %}
+      </div>
+
+      <!-- Dashboard Content -->
+      <div class="col-12 col-md-9">
         <h3 class="dashboard-title">Trainer Dashboard</h3>
 
-        <div class="row mt-4">
+        <div class="row mt-4 g-3">
           
           <!-- Latest Subscriber -->
-          <div class="col-md-6 mb-4">
-            <div class="card shadow-sm rounded-4 border-0">
+          <div class="col-12 col-sm-6 mb-4">
+            <div class="card shadow-sm rounded-4 border-0 h-100">
               <h4 class="card-header">Latest Subscriber</h4>
               <div class="card-body">
                 {% with trainer_sub.last as latest_sub %}
@@ -30,8 +52,8 @@
           </div>
 
           <!-- Latest Payment -->
-          <div class="col-md-6 mb-4">
-            <div class="card shadow-sm rounded-4 border-0">
+          <div class="col-12 col-sm-6 mb-4">
+            <div class="card shadow-sm rounded-4 border-0 h-100">
               <h4 class="card-header">Latest Payment</h4>
               <div class="card-body">
                 {% with trainer_pay.last as latest_payment %}
@@ -58,6 +80,12 @@
   </section>
 
   <style>
+    .trainer-toggle-btn {
+      background: linear-gradient(135deg, #28a745, #218838);
+      border: none;
+      color: white;
+      border-radius: 8px;
+    }
     /* Dashboard Heading Style */
     .dashboard-title {
       font-size: 1.8rem;

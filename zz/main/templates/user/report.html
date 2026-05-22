@@ -32,47 +32,72 @@
   .btn-primary:hover {
       background: #0056b3;
   }
+  .sidebar-toggle-btn {
+    background: linear-gradient(135deg, #007bff, #6610f2);
+    border: none;
+    color: white;
+    border-radius: 8px;
+  }
 </style>
 
 <main class="container my-4">
-    <div class="row">
-        <!-- Sidebar -->
-        <div class="col-3">
-            {% include 'user/left-sidebar.html' %}
-        </div>
 
-        <!-- User Report Form -->
-        <div class="col-9">
-            <div class="report-container">
-                <h3 class="report-title">Report for User</h3>
+  <!-- Mobile Sidebar Toggle -->
+  <div class="d-md-none mb-3">
+    <button class="btn sidebar-toggle-btn w-100 py-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#userMobileSidebar3">
+      <i class="bi bi-list me-2"></i> Navigation Menu
+    </button>
+  </div>
 
-                {% if msg %}
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                    <strong>{{ msg }}</strong>
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
-                {% endif %}
+  <!-- Offcanvas Sidebar (Mobile) -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="userMobileSidebar3" aria-labelledby="userMobileSidebarLabel3">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="userMobileSidebarLabel3">My Account</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body p-0">
+      {% include 'user/left-sidebar.html' %}
+    </div>
+  </div>
 
-                <div class="card mt-4">
-                    <div class="card-body">
-                        <form method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    {{ form.as_table }}
-                                    <tr>
-                                        <td colspan="2" class="text-center">
-                                            <button type="submit" class="btn btn-primary px-4">Submit Report</button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                        </form>
-                    </div>
+  <div class="row">
+    <!-- Desktop Sidebar -->
+    <div class="col-md-3 d-none d-md-block">
+        {% include 'user/left-sidebar.html' %}
+    </div>
+
+    <!-- User Report Form -->
+    <div class="col-12 col-md-9">
+        <div class="report-container">
+            <h3 class="report-title">Report for Trainer</h3>
+
+            {% if msg %}
+            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <strong>{{ msg }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endif %}
+
+            <div class="card mt-4">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                {{ form.as_table }}
+                                <tr>
+                                    <td colspan="2" class="text-center">
+                                        <button type="submit" class="btn btn-primary px-4">Submit Report</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+  </div>
 </main>
 
 {% endblock %}

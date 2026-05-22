@@ -7,9 +7,16 @@
     background-color: #f8f9fa;
     border-radius: 12px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-    padding: 2.5rem;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  @media (min-width: 768px) {
+    .login-section {
+      padding: 2.5rem;
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
   }
   
   .section-heading {
@@ -99,13 +106,14 @@
         
         <form method="post" action="">
           {% csrf_token %}
-          <table class="table table-bordered">
-            {{form.as_table}}
-            <tr>
-              <td colspan="2">
-                <button type="submit" class="btn btn-warning">
-                  <i class="fas fa-sign-in-alt me-2"></i> Login
-                </button>
+          <div class="table-responsive">
+            <table class="table table-bordered">
+              {{form.as_table}}
+              <tr>
+                <td colspan="2">
+                  <button type="submit" class="btn btn-warning">
+                    <i class="fas fa-sign-in-alt me-2"></i> Login
+                  </button>
 				<style>
 					 .btn-warning {
     border: none;

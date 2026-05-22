@@ -12,17 +12,6 @@
         <style>
             body {
                 font-family: Arial, sans-serif;
-
-            }
-
-            .container {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-            }
-
-            .table-container {
-                width: 60%;
             }
 
             table {
@@ -41,7 +30,7 @@
                 background-color: #f4f4f4;
             }
 
-            button {
+            button.delete-btn {
                 background-color: red;
                 color: white;
                 border: none;
@@ -49,14 +38,8 @@
                 cursor: pointer;
             }
 
-            button:hover {
+            button.delete-btn:hover {
                 background-color: darkred;
-            }
-
-            .chart-container {
-                width: 35%;
-                display: flex;
-                justify-content: center;
             }
 
             canvas {
@@ -74,8 +57,6 @@
                 transition: transform 0.3s ease-in-out;
             }
 
-
-
             .alert {
                 border-radius: 10px;
                 font-size: 1rem;
@@ -84,18 +65,6 @@
             .progress {
                 height: 20px;
                 border-radius: 5px;
-            }
-
-            @media (max-width: 768px) {
-                .container {
-                    flex-direction: column;
-                    align-items: center;
-                }
-
-                .table-container,
-                .chart-container {
-                    width: 100%;
-                }
             }
         </style>
     </head>
@@ -116,48 +85,51 @@
         {% endif %}
     </div>
 
-    <div class="container">
-        <!-- Table (Left Side) -->
-        <div class="table-container">
-            <table>
-                <tr>
-
-                    <th>Height</th>
-                    <th>Weight</th>
-                    <th>BMI</th>
-                    <th>Date Recorded</th>
-                    <th>Action</th>
-                </tr>
-                {% for record in records %}
-                <tr>
-                    <td>{{ record.height|mul:100|floatformat:0 }} cm</td>
-                    <td>{{ record.weight }} kg</td>
-                    <td>{{ record.bmi|floatformat:2 }}</td>
-                    <td>{{ record.date_recorded }}</td>
-                    <td>
-                        <form method="post" action="{% url 'delete_bmi_record' record.id %}">
-                            {% csrf_token %}
-                            <button type="submit"
-                                onclick="return confirm('Are you sure you want to delete this record?');">
-                                Delete
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-            <br>
-            <button class="btn btn-primary">
-                <a href="{% url 'bmi_calculator' %}">Calculate BMI</a>
-            </button>
-            <button class="btn btn-success">
-                <a href="{% url 'user_dashboard' %}">Back to Dashboard</a>
-            </button>
-            <br>
-        </div>
-        <!-- Chart (Right Side) -->
-        <div class="chart-container">
-            <canvas id="bmiChart"></canvas>
+    <div class="container-fluid px-3 px-md-4">
+        <div class="row g-4 align-items-start">
+            <!-- Table (Left / Top on mobile) -->
+            <div class="col-12 col-lg-7">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-sm">
+                        <thead>
+                            <tr>
+                                <th>Height</th>
+                                <th>Weight</th>
+                                <th>BMI</th>
+                                <th>Date Recorded</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr>
+                                <td>{{ record.height|mul:100|floatformat:0 }} cm</td>
+                                <td>{{ record.weight }} kg</td>
+                                <td>{{ record.bmi|floatformat:2 }}</td>
+                                <td>{{ record.date_recorded }}</td>
+                                <td>
+                                    <form method="post" action="{% url 'delete_bmi_record' record.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-btn"
+                                            onclick="return confirm('Are you sure you want to delete this record?');">
+                                            Delete
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <a href="{% url 'bmi_calculator' %}" class="btn btn-primary">Calculate BMI</a>
+                    <a href="{% url 'user_dashboard' %}" class="btn btn-success">Back to Dashboard</a>
+                </div>
+            </div>
+            <!-- Chart (Right / Bottom on mobile) -->
+            <div class="col-12 col-lg-5">
+                <canvas id="bmiChart" style="height:300px;"></canvas>
+            </div>
         </div>
     </div>
 

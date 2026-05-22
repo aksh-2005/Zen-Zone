@@ -5,10 +5,10 @@
   <section class="hero-section position-relative d-flex align-items-center justify-content-center text-center">
     <div class="hero-overlay"></div>
     <div class="hero-content container">
-      <h1 class="hero-title display-3 fw-bold text-white mb-3">Your Fitness Journey Starts Here</h1>
+      <h1 class="hero-title display-4 fw-bold text-white mb-3">Your Fitness Journey Starts Here</h1>
       <p class="hero-subtitle lead text-white mb-4">Discover a healthier, stronger you at Zen Zone.</p>
-      <div class="mt-4">
-        <a href="{% url 'enquiry' %}" class="btn btn-warning btn-lg me-3 pulse-btn text-dark fw-bold">Join the Movement</a>
+      <div class="mt-4 d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'enquiry' %}" class="btn btn-warning btn-lg pulse-btn text-dark fw-bold">Join the Movement</a>
         <a href="#next" class="btn btn-outline-light btn-lg">Learn More</a>
       </div>
     </div>
@@ -59,7 +59,7 @@
     <h1 class="text-center section-heading display-5 fw-bold mb-5 text-warning">Our Services</h1>
     <div class="row g-4">
       {% for service in services %}
-      <div class="col-md-4">
+      <div class="col-12 col-sm-6 col-md-4">
         <div class="card service-card border-0 h-100 bg-dark-card">
           <div class="img-container">
             <img src="{{service.img.url}}" class="card-img-top rounded-top" alt="{{service.title}}" />
@@ -93,7 +93,7 @@
     <section class="container my-5 py-4 text-center">
       <h1 class="section-heading display-5 fw-bold mb-5 text-warning">Why Choose Us?</h1>
       <div class="row g-4">
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="card feature-card p-4 border-0 h-100 bg-dark-card">
             <div class="feature-icon mb-3 text-warning">
               <i class="bi bi-gear-fill"></i>
@@ -102,7 +102,7 @@
             <p class="mb-0 text-light">Train with top-tier machines and free weights designed for optimal results.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="card feature-card p-4 border-0 h-100 bg-dark-card">
             <div class="feature-icon mb-3 text-warning">
               <i class="bi bi-person-check-fill"></i>
@@ -111,7 +111,7 @@
             <p class="mb-0 text-light">Get personalized guidance from certified fitness professionals who care about your progress.</p>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-sm-6 col-md-4">
           <div class="card feature-card p-4 border-0 h-100 bg-dark-card">
             <div class="feature-icon mb-3 text-warning">
               <i class="bi bi-clock-fill"></i>
@@ -127,8 +127,10 @@
     <div class="container text-center">
       <h2 class="text-warning mb-4 fw-bold">Ready to Transform Your Life?</h2>
       <p class="text-white mb-4">Join Zen Zone today and start your journey to a healthier, stronger you.</p>
-      <a href="{% url 'enquiry' %}" class="btn btn-lg btn-warning pulse-btn fw-bold me-3 text-dark">Get Started Now</a>
-      <a href="{% url 'pricing' %}" class="btn btn-lg btn-outline-light">View Membership Plans</a>
+      <div class="d-flex flex-wrap justify-content-center gap-3">
+        <a href="{% url 'enquiry' %}" class="btn btn-lg btn-warning pulse-btn fw-bold text-dark">Get Started Now</a>
+        <a href="{% url 'pricing' %}" class="btn btn-lg btn-outline-light">View Membership Plans</a>
+      </div>
     </div>
   </section>
 </main>
@@ -148,6 +150,7 @@
   .hero-section {
     height: 90vh;
     position: relative;
+    min-height: 400px;
   }
   
   .hero-overlay {
@@ -172,7 +175,7 @@
   
   /* Image Carousel Improvements */
   .banner-img {
-    height: 600px;
+    height: clamp(250px, 50vw, 600px);
     object-fit: cover;
     filter: brightness(0.8);
   }
@@ -301,11 +304,22 @@
   /* Responsive Adjustments */
   @media (max-width: 768px) {
     .hero-section {
-      height: 60vh;
+      height: 70vh;
+      min-height: 350px;
     }
-    
-    .banner-img {
-      height: 400px;
+    .hero-title {
+      font-size: 1.8rem !important;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero-section {
+      height: 80vh;
+    }
+    .hero-title {
+      font-size: 1.5rem !important;
     }
   }
 </style>
